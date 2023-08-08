@@ -8,7 +8,8 @@ class ContactHelper:
 
     def open_new_contact_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("add new").click()
+        if not (len(wd.find_elements_by_name("aday")) > 0 and len(wd.find_elements_by_name("submit")) > 0):
+            wd.find_element_by_link_text("add new").click()
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -58,8 +59,8 @@ class ContactHelper:
 
     def go_to_home_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
-        time.sleep(2)
+        if not (len(wd.find_elements_by_name("add")) > 0 and len(wd.find_elements_by_name("to_group")) > 0):
+            wd.find_element_by_link_text("home").click()
 
     def count(self):
         wd = self.app.wd
