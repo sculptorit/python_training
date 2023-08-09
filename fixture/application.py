@@ -19,8 +19,7 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        if not (len(wd.find_elements_by_name("user")) > 0 and len(wd.find_elements_by_name("pass")) > 0):
-            wd.get("http://localhost/addressbook/")
+        wd.get("http://localhost/addressbook/")
 
     def destroy(self):
         self.wd.quit()
