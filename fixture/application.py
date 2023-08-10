@@ -5,16 +5,16 @@ from fixture.contact import ContactHelper
 
 
 class Application:
-
     def __init__(self, browser, base_url):
+        # self.wd = webdriver.Chrome(executable_path=r'')
         if browser == "firefox":
-            self.wd = webdriver.Firefox()
+            self.wd = webdriver.Firefox(executable_path=r'D:\tools\geckodriver.exe')
         elif browser == "chrome":
             self.wd = webdriver.Chrome()
         elif browser == "ie":
             self.wd = webdriver.Ie()
         else:
-            raise ValueError("WARNING: UNKNOWN BROWSER %s" % browser)
+            raise ValueError("Unrecognized browser %s" % browser)
         self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
