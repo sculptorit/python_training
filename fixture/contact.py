@@ -12,6 +12,16 @@ class ContactHelper:
         if not (len(wd.find_elements_by_name("aday")) > 0 and len(wd.find_elements_by_name("submit")) > 0):
             wd.find_element_by_link_text("add new").click()
 
+    def create(self, contact):
+        wd = self.app.wd
+        self.open_new_contact_page()
+        # fill contact form
+        self.fill_contact_form(contact)
+        # submit contact creation
+        wd.find_element_by_xpath("//input[21]").click()
+        self.go_to_home_page()
+        self.contact_cache = None
+
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
@@ -23,6 +33,7 @@ class ContactHelper:
         wd = self.app.wd
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("address", contact.address)
         self.change_field_value("mobile", contact.mobile)
         self.change_field_value("home", contact.home)
         self.change_field_value("work", contact.work)
@@ -30,17 +41,6 @@ class ContactHelper:
         self.change_field_value("email", contact.email)
         self.change_field_value("email2", contact.email2)
         self.change_field_value("email3", contact.email3)
-        self.change_field_value("address", contact.address)
-
-    def create(self, contact):
-        wd = self.app.wd
-        self.open_new_contact_page()
-        # fill contact form
-        self.fill_contact_form(contact)
-        # submit contact creation
-        wd.find_element_by_xpath("//input[21]").click()
-        self.go_to_home_page()
-        self.contact_cache = None
 
     def delete_first_contact(self):
         self.delete_contact_by_index(0)
@@ -95,7 +95,8 @@ class ContactHelper:
                 address = cells[3].text
                 all_emails = cells[4].text
                 all_phones = cells[5].text
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, address=address, all_emails_from_homepage=all_emails, all_phones_from_homepage=all_phones))
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, address=address,
+                all_emails_from_homepage=all_emails, all_phones_from_homepage=all_phones))
         return list(self.contact_cache)
 
     def open_contact_to_edit_by_index(self, index):
@@ -135,9 +136,9 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_view_by_index(index)
         text = wd.find_element_by_id("content").text
-        homephone = re.search('H: (.*)', text).group(1)
-        workphone = re.search('W: (.*)', text).group(1)
-        mobilephone = re.search('M: (.*)', text).group(1)
-        secondaryphone = re.search('P: (.*)', text).group(1)
+        homephone = re.search("H: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
         return Contact(homephone=homephone, mobilephone=mobilephone,
                        workphone=workphone, secondaryphone=secondaryphone)
