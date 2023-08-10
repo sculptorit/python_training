@@ -22,6 +22,13 @@ class ContactHelper:
         self.go_to_home_page()
         self.contact_cache = None
 
+    def add_contact_to_group_by_id(self, cont_id, group_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contact_by_id(cont_id)
+        wd.find_element_by_xpath("//select[@name='to_group']/option[@value='%s']" % group_id).click()
+        wd.find_element_by_css_selector("input[value='Add to']").click()
+
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
@@ -69,9 +76,18 @@ class ContactHelper:
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
         self.contact_cache = None
 
+    def delete_contact_from_group_by_id(self, cont_id, group_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_xpath("//select[@name='group']/option[@value='%s']" % group_id).click()
+        wd.implicitly_wait(5)
+        self.select_contact_by_id(cont_id)
+        wd.find_element_by_name("remove").click()
+        self.app.open_home_page()
+
     def select_contact_by_id(self, id):
         wd = self.app.wd
-        wd.find_element_by_xpath("//*[@id='%s']/../..//*[@title='Edit']" % id).click()
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def modify_first_contact(self):
         self.modify_contact_by_index(0)
