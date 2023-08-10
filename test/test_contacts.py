@@ -1,14 +1,19 @@
 import re
+from fixture.contact import Contact
 
 
-def test_email_on_homepage(app):
-    contact_from_homepage = app.contact.get_contact_list()[0]
-    contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
-    assert contact_from_homepage.lastname == contact_from_edit_page.lastname
-    assert contact_from_homepage.firstname == contact_from_edit_page.firstname
-    assert contact_from_homepage.address == contact_from_edit_page.address
-    assert contact_from_homepage.all_phones_from_homepage == merge_phone_like_on_homepage(contact_from_edit_page)
-    assert contact_from_homepage.all_emails_from_homepage == merge_emails_like_on_homepage(contact_from_edit_page)
+def test_all_on_homepage(app, db):
+    if len(db.get_contact_list()) == 0:
+        app.contact.fill_full_contact_info(Contact(firstname="New first firstname"))
+    contacts_from_db = sorted(db.get_contact_list(), key=Contact.id_or_max)
+    contacts_from_ui = sorted(app.contact.get_contact_list(), key=Contact.id_or_max)
+    assert len(contacts_from_ui) == len(contacts_from_db)
+    for i in range(len(contacts_from_ui)):
+        assert contacts_from_ui[i].firstname == contacts_from_db[i].firstname
+        assert contacts_from_ui[i].lastname == contacts_from_db[i].lastname
+        assert contacts_from_ui[i].address == contacts_from_db[i].address
+        assert contacts_from_ui[i].all_emails_from_home_page == merge_emails_like_on_homepage(contacts_from_db[i])
+        assert contacts_from_ui[i].all_phones_from_home_page == merge_phone_like_on_homepage(contacts_from_db[i])
 
 
 def clear(s):
