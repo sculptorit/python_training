@@ -4,12 +4,7 @@ import json
 import os.path
 
 fixture = None
-
-
-def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="firefox")
-    parser.addoption("--target", action="store", default="target.json")
-
+target = None
 
 @pytest.fixture
 def app(request):
@@ -33,3 +28,8 @@ def stop(request):
         fixture.destroy()
     request.addfinalizer(fin)
     return fixture
+
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--target", action="store", default="target.json")

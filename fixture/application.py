@@ -3,6 +3,7 @@ from fixture.group import GroupHelper
 from fixture.contact import ContactHelper
 from selenium import webdriver
 
+
 class Application:
 
     def __init__(self, browser, base_url):
@@ -14,6 +15,7 @@ class Application:
             self.wd = webdriver.Ie()
         else:
             raise ValueError("EXCEPTION OTHER BROWSER %s" % browser)
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
@@ -26,9 +28,10 @@ class Application:
         except:
             return False
 
-    def open_home_page(self):
+    def open_homepage(self):
         wd = self.wd
-        wd.get(self.base_url)
+        if not wd.current_url.endswith('addressbook/'):
+            wd.get(self.base_url)
 
     def destroy(self):
         self.wd.quit()
