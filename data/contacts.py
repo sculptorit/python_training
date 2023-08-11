@@ -1,36 +1,27 @@
-from selenium import webdriver
-from fixture.session import SessionHelper
-from fixture.group import GroupHelper
-from fixture.contact import ContactHelper
+import random
+import string
+from model.contact import Contact
 
 
-class Application:
-    def __init__(self, browser, base_url):
-        # self.wd = webdriver.Chrome(executable_path=r'')
-        if browser == "firefox":
-            self.wd = webdriver.Firefox(executable_path=r'D:\tools\geckodriver.exe')
-        elif browser == "chrome":
-            self.wd = webdriver.Chrome()
-        elif browser == "ie":
-            self.wd = webdriver.Ie()
-        else:
-            raise ValueError("Unrecognized browser %s" % browser)
-        self.wd.implicitly_wait(5)
-        self.session = SessionHelper(self)
-        self.group = GroupHelper(self)
-        self.contact = ContactHelper(self)
-        self.base_url = base_url
+def random_string(prefix, maxlen):
+    symbols = string.ascii_letters + string.digits
+    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
-    def is_valid(self):
-        try:
-            self.wd.current_url
-            return True
-        except:
-            return False
 
-    def open_home_page(self):
-        wd = self.wd
-        wd.get(self.base_url)
+def random_digits(maxlen):
+    symbols = string.digits
+    return "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
-    def destroy(self):
-        self.wd.quit()
+
+testdata = [Contact(firstname=random_string('firstname', 10),
+                    lastname=random_string('lastname', 10),
+                    address=random_string('address', 10),
+                    email=random_string('email', 10),
+                    email2=random_string('email2', 10),
+                    email3=random_string('email3', 10),
+                    mobilephone=random_digits(10),
+                    homephone=random_digits(10),
+                    workphone=random_digits(10),
+                    secondaryphone=random_digits(10))
+    for i in range(5)
+]
