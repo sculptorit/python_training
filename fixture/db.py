@@ -1,6 +1,6 @@
 import pymysql.connections
-from model.group import Group
 from model.contact import Contact
+from model.group import Group
 
 
 class DbFixture:

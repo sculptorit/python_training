@@ -10,7 +10,7 @@ def random_string(prefix, maxlen):
 
 def random_digits(maxlen):
     symbols = string.digits
-    return "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
+    return "+" + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 
 testdata = [Contact(firstname=random_string('firstname', 10),
