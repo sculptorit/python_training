@@ -2,6 +2,7 @@
 from model.contact import Contact
 import random
 
+
 def test_modify_contact(app, db, check_ui):
     if len(db.get_contact_list()) == 0:
         app.contact.create(Contact(firstname="fghjk", lastname="fghnjmk",
@@ -10,7 +11,7 @@ def test_modify_contact(app, db, check_ui):
                           email="test@mail.ru", email2="test2@mail.ru", email3="test3@mail.ru"))
     old_contacts = db.get_contact_list()
     contact = random.choice(old_contacts)
-    contact.firstname = Contact(firstname="New firstname").firstname
+    contact.firstname = Contact(firstname="newnewnew").firstname
     app.contact.modify_contact_by_id(contact)
     assert len(old_contacts) == len(db.get_contact_list())
     new_contacts = db.get_contact_list()

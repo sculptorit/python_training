@@ -80,7 +80,7 @@ class ContactHelper:
         wd = self.app.wd
         self.app.open_home_page()
         wd.find_element_by_xpath("//select[@name='group']/option[@value='%s']" % group_id).click()
-        wd.implicitly_wait(5)
+        wd.implicitly_wait(10)
         self.select_contact_by_id(cont_id)
         wd.find_element_by_name("remove").click()
         self.app.open_home_page()
